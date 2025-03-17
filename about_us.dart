@@ -14,7 +14,7 @@ class AboutUs extends StatelessWidget {
       title: 'About Us',
       body: Center(
         child: Text(
-          'Insert Waffle Here',
+          'gIThUB TESTING',
           style: TextStyle(fontSize: 24),
         ),
       ),
