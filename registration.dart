@@ -50,21 +50,58 @@ class _RegistrationState extends State<Registration> {
     final confirmPassword = _confirmPasswordController.text;
 
     // Simple validation for matching passwords
-    if (password != confirmPassword) {
+    if (password != confirmPassword || password.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Passwords do not match!'),
       ));
       return;
+      //Check username is not empty
+    } else if (username == null || username
+        .trim()
+        .isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Username cannot be empty!'),
+      ));
+      return;
+      //Check Full name is not empty
+    }else if (fullName == null || fullName
+        .trim()
+        .isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Full Name cannot be empty!'),
+      ));
+      return;
+      //Check Email is not empty
+    }else if (email == null || email
+        .trim()
+        .isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Email cannot be empty!'),
+      ));
+      return;
+      //Check if Contact Number is empty and exclude letters
+    }else if (contact == null || contact.trim().isEmpty || !RegExp(r'^[0-9]+$').hasMatch(contact)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Contact Number invalid! Must contain only numbers.'),
+      ));
+      return;
+      //Check a date of birth has been selected
+    }else if (_selectedDateOfBirth == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please select your date of birth!'),
+      ));
+      return;
+      //If all data is filled in, return to login page
+    }else{
+      Navigator.push(context, MaterialPageRoute(builder: (context) => IntroScreen()));
     }
-
-    // Print statements to check it worked, will link to database
+    // Print to show registration has worked, replace with database logic
     print('Full Name: $fullName');
     print('Email: $email');
     print('Contact Number: $contact');
     print('Date of Birth: $_selectedDateOfBirth');
     print('Username: $username');
     print('Password: $password');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => IntroScreen()));
   }
 
   @override
