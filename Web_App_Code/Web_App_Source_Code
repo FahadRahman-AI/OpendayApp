@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=375px, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>University of Wolverhampton</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#0072CE',
+secondary: '#4B9EFF'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body { background: #FFFFFF; max-width: 375px; margin: 0 auto; min-height: 100vh; }
+.tab-active { color: #0072CE; }
+.tab-active i { color: #0072CE; }
+.map-container::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body class="relative">
+<nav class="fixed top-0 w-full bg-white z-50 border-b">
+<div class="flex items-center justify-between p-4">
+<div class="font-['Pacifico'] text-xl text-primary">UoW</div>
+<div class="flex items-center space-x-4">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-notification-3-line text-gray-600"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-settings-3-line text-gray-600"></i>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-16 pb-20">
+<div class="p-4">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-medium">Welcome back</h2>
+<p class="text-sm text-gray-500">Student ID: 2025001234</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-primary bg-opacity-10 p-4 rounded-lg cursor-pointer" onclick="showQRCode()">
+<div class="w-8 h-8 flex items-center justify-center mb-2">
+<i class="ri-qr-scan-line text-primary text-xl"></i>
+</div>
+<h3 class="font-medium mb-1">Check In</h3>
+<p class="text-xs text-gray-500">Scan QR code to check in</p>
+</div>
+<div id="qrCodeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white p-6 rounded-lg w-[300px] relative">
+<button onclick="closeQRCode()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line text-xl"></i>
+</button>
+<h3 class="text-lg font-medium mb-4 text-center">Your Check-in QR Code</h3>
+<div class="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2025001234" alt="QR Code" class="w-48 h-48">
+</div>
+<p class="text-sm text-gray-500 text-center">Student ID: 2025001234</p>
+</div>
+</div>
+<div class="bg-primary bg-opacity-10 p-4 rounded-lg">
+<div class="w-8 h-8 flex items-center justify-center mb-2">
+<i class="ri-calendar-line text-primary text-xl"></i>
+</div>
+<h3 class="font-medium mb-1">Schedule</h3>
+<p class="text-xs text-gray-500">View your timetable</p>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="font-medium mb-4">Today's Classes</h3>
+<div class="space-y-3">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Computer Science</h4>
+<span class="text-sm text-primary">09:00 - 10:30</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Room MX-101</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-user-line mr-2"></i>
+<span>Dr. Sarah Johnson</span>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Data Structures</h4>
+<span class="text-sm text-primary">11:00 - 12:30</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Room MH-205</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-user-line mr-2"></i>
+<span>Prof. Michael Brown</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="font-medium mb-4">Campus Map</h3>
+<div class="map-container h-48 rounded-lg overflow-hidden relative">
+<img src="https://public.readdy.ai/gen_page/map_placeholder_1280x720.png" class="w-full h-full object-cover" alt="Campus Map">
+<div class="absolute bottom-4 right-4">
+<button class="bg-white px-4 py-2 rounded-button shadow-lg flex items-center">
+<i class="ri-map-2-line mr-2"></i>
+<span>View Full Map</span>
+</button>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-medium mb-4">Quick Links</h3>
+<div class="grid grid-cols-4 gap-4">
+<div class="text-center cursor-pointer" onclick="pages.library = libraryPage; switchPage('library')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-book-line text-primary"></i>
+</div>
+<span class="text-xs">Library</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.chat = chatPage; switchPage('chat')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-message-2-line text-primary"></i>
+</div>
+<span class="text-xs">Chat</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.events = eventsPage; switchPage('events')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-calendar-event-line text-primary"></i>
+</div>
+<span class="text-xs">Events</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.resources = resourcesPage; switchPage('resources')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-file-list-3-line text-primary"></i>
+</div>
+<span class="text-xs">Resources</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 w-full bg-white border-t">
+<div class="grid grid-cols-4 py-2">
+<a class="flex flex-col items-center tab-active" data-page="home">
+<i class="ri-home-5-line text-xl mb-1"></i>
+<span class="text-xs">Home</span>
+</a>
+<a class="flex flex-col items-center text-gray-500" data-page="schedule">
+<i class="ri-calendar-line text-xl mb-1"></i>
+<span class="text-xs">Schedule</span>
+</a>
+<a class="flex flex-col items-center text-gray-500" data-page="courses">
+<i class="ri-book-open-line text-xl mb-1"></i>
+<span class="text-xs">Courses</span>
+</a>
+<a class="flex flex-col items-center text-gray-500" data-page="profile">
+<i class="ri-user-line text-xl mb-1"></i>
+<span class="text-xs">Profile</span>
+</a>
+</div>
+</nav>
+<script>
+const mailData = [
+{
+title: "Welcome to Computer Science Department",
+sender: "Dr. Sarah Johnson",
+time: "1h ago",
+content: `Dear new students,
+Welcome to the Computer Science Department! We're excited to have you join our academic community. Here's some important information to help you get started:
+1. Course Registration
+- Please complete your course registration by March 15th
+- Attend the orientation session on March 12th at 10 AM
+- Download the course materials from the student portal
+2. Department Resources
+- 24/7 Computer Lab access (Student ID required)
+- Free software licenses for development tools
+- Online learning resources and tutorials
+3. Support Services
+- Academic advisors available Mon-Fri
+- Technical support desk in Room 301
+- Student mentoring program
+Feel free to reach out if you have any questions!
+Best regards,
+Dr. Sarah Johnson
+Head of Computer Science Department`
+},
+{
+title: "Research Assistant Opportunity",
+sender: "Prof. Michael Brown",
+time: "3h ago",
+content: `Hello Students,
+We're currently looking for passionate students to join our AI research team. This is a great opportunity to:
+- Gain hands-on experience with cutting-edge AI technologies
+- Work with experienced researchers
+- Receive a monthly stipend
+- Potential for publication co-authorship
+Requirements:
+- Strong programming skills (Python, TensorFlow)
+- Good academic standing
+- 10 hours/week commitment
+Interested students should send their CV to m.brown@university.edu by March 20th.
+Best regards,
+Prof. Michael Brown`
+},
+{
+title: "Assignment Deadline Extension",
+sender: "Dr. Emily Chen",
+time: "5h ago",
+content: `Dear students,
+Due to the upcoming university event, the deadline for the Data Structures assignment has been extended to March 25th, 2025.
+Please use this additional time to:
+- Review your code implementation
+- Complete all test cases
+- Add proper documentation
+Remember to submit your work through the course portal.
+Best regards,
+Dr. Emily Chen`
+}
+];
+function showMailDetail(index) {
+const mail = mailData[index];
+const modalContent = document.getElementById('mailDetailContent');
+modalContent.innerHTML = `
+<div class="mb-6">
+<h3 class="text-xl font-medium mb-2">${mail.title}</h3>
+<div class="flex items-center text-sm text-gray-500 mb-4">
+<span class="mr-2">${mail.sender}</span>
+<span>${mail.time}</span>
+</div>
+<div class="text-sm whitespace-pre-line">${mail.content}</div>
+</div>
+`;
+const modal = document.getElementById('mailDetailModal');
+modal.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+}
+function closeMailDetail() {
+const modal = document.getElementById('mailDetailModal');
+modal.style.display = 'none';
+document.body.style.overflow = 'auto';
+}
+function showAllMail() {
+// Implement view all emails functionality
+const modal = document.getElementById('mailDetailModal');
+const modalContent = document.getElementById('mailDetailContent');
+modalContent.innerHTML = `
+<div class="mb-6">
+<h3 class="text-xl font-medium mb-4">All Messages</h3>
+<div class="space-y-4">
+${mailData.map((mail, index) => `
+<div class="border-b pb-4 last:border-b-0 last:pb-0 cursor-pointer" onclick="showMailDetail(${index})">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">${mail.title}</h4>
+<span class="text-xs text-gray-500">${mail.time}</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mb-2">
+<span>${mail.sender}</span>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2">${mail.content.split('\n')[0]}</p>
+</div>
+`).join('')}
+</div>
+</div>
+`;
+modal.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+}
+const libraryPage = `
+<div class="p-4">
+<div class="flex items-center mb-6">
+<button onclick="switchPage('home')" class="mr-4">
+<i class="ri-arrow-left-line text-xl"></i>
+</button>
+<h2 class="text-xl font-medium">Library Resources</h2>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Required Course Books</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Introduction to Programming</h4>
+<span class="text-sm text-green-600">Available</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">By Robert C. Martin</p>
+<p class="text-sm text-gray-500 mb-2">Location: Floor 2, Section CS</p>
+<button class="text-primary text-sm">Reserve Book</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Data Structures & Algorithms</h4>
+<span class="text-sm text-yellow-600">2 Copies Left</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">By Thomas H. Cormen</p>
+<p class="text-sm text-gray-500 mb-2">Location: Floor 2, Section CS</p>
+<button class="text-primary text-sm">Reserve Book</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Database Management Systems</h4>
+<span class="text-sm text-red-600">On Loan</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">By Raghu Ramakrishnan</p>
+<p class="text-sm text-gray-500 mb-2">Location: Floor 2, Section DB</p>
+<button class="text-primary text-sm">Join Waitlist</button>
+</div>
+</div>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Digital Resources</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<h4 class="font-medium mb-2">Online Journals</h4>
+<p class="text-sm text-gray-500">Access to IEEE, ACM, and more</p>
+<button class="text-primary text-sm mt-2">Access Now</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<h4 class="font-medium mb-2">E-Books Collection</h4>
+<p class="text-sm text-gray-500">24/7 access to digital textbooks</p>
+<button class="text-primary text-sm mt-2">Browse Collection</button>
+</div>
+</div>
+</div>
+
+<div>
+<h3 class="font-medium mb-4">Library Services</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-computer-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">Study Rooms</h4>
+<button class="text-primary text-sm">Book Now</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-printer-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">Printing</h4>
+<button class="text-primary text-sm">Print Files</button>
+</div>
+</div>
+</div>
+</div>
+`;
+
+const chatPage = `
+<div class="p-4">
+<div class="flex items-center mb-6">
+<button onclick="switchPage('home')" class="mr-4">
+<i class="ri-arrow-left-line text-xl"></i>
+</button>
+<h2 class="text-xl font-medium">Support Chat</h2>
+</div>
+
+<div class="bg-white rounded-lg p-4 border mb-6">
+<h3 class="font-medium mb-4">Available Support Teams</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+<i class="ri-customer-service-2-line text-green-600"></i>
+</div>
+<div>
+<h4 class="font-medium">Academic Support</h4>
+<p class="text-xs text-gray-500">Response time: < 5 mins</p>
+</div>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</div>
+
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+<i class="ri-tools-line text-blue-600"></i>
+</div>
+<div>
+<h4 class="font-medium">Technical Support</h4>
+<p class="text-xs text-gray-500">Response time: < 10 mins</p>
+</div>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</div>
+
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+<i class="ri-building-2-line text-purple-600"></i>
+</div>
+<div>
+<h4 class="font-medium">Housing Support</h4>
+<p class="text-xs text-gray-500">Response time: < 15 mins</p>
+</div>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-4">FAQs</h3>
+<div class="space-y-4">
+<div class="cursor-pointer">
+<h4 class="text-sm font-medium mb-2">How do I access my online classes?</h4>
+<p class="text-sm text-gray-500">Click here for step-by-step guide</p>
+</div>
+<div class="cursor-pointer">
+<h4 class="text-sm font-medium mb-2">Where can I find my student ID?</h4>
+<p class="text-sm text-gray-500">Click here to learn more</p>
+</div>
+<div class="cursor-pointer">
+<h4 class="text-sm font-medium mb-2">How do I submit assignments?</h4>
+<p class="text-sm text-gray-500">Click here for submission guidelines</p>
+</div>
+</div>
+</div>
+</div>
+`;
+
+const eventsPage = `
+<div class="p-4">
+<div class="flex items-center mb-6">
+<button onclick="switchPage('home')" class="mr-4">
+<i class="ri-arrow-left-line text-xl"></i>
+</button>
+<h2 class="text-xl font-medium">Events & Opportunities</h2>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Upcoming Events</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Tech Career Fair 2025</h4>
+<span class="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded">Career</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">March 15, 2025 • 10:00 AM - 4:00 PM</p>
+<p class="text-sm text-gray-500 mb-2">Main Campus, Exhibition Hall</p>
+<button class="text-primary text-sm">Register Now</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">AI Workshop Series</h4>
+<span class="text-sm bg-green-100 text-green-600 px-2 py-1 rounded">Workshop</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">March 20-22, 2025 • 2:00 PM - 5:00 PM</p>
+<p class="text-sm text-gray-500 mb-2">Computer Science Building, Room 301</p>
+<button class="text-primary text-sm">Join Waitlist</button>
+</div>
+</div>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Internship Opportunities</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Software Developer Intern</h4>
+<span class="text-sm bg-yellow-100 text-yellow-600 px-2 py-1 rounded">New</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Microsoft • Summer 2025</p>
+<p class="text-sm text-gray-500 mb-2">Application Deadline: April 1, 2025</p>
+<button class="text-primary text-sm">Apply Now</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Data Science Intern</h4>
+<span class="text-sm bg-yellow-100 text-yellow-600 px-2 py-1 rounded">New</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Google • Summer 2025</p>
+<p class="text-sm text-gray-500 mb-2">Application Deadline: April 15, 2025</p>
+<button class="text-primary text-sm">Apply Now</button>
+</div>
+</div>
+</div>
+
+<div>
+<h3 class="font-medium mb-4">Student Clubs</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-code-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">Coding Club</h4>
+<button class="text-primary text-sm">Join Now</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-robot-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">AI Society</h4>
+<button class="text-primary text-sm">Join Now</button>
+</div>
+</div>
+</div>
+</div>
+`;
+
+const resourcesPage = `
+<div class="p-4">
+<div class="flex items-center mb-6">
+<button onclick="switchPage('home')" class="mr-4">
+<i class="ri-arrow-left-line text-xl"></i>
+</button>
+<h2 class="text-xl font-medium">Course Resources</h2>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Required Materials</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Computer Science</h4>
+<span class="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded">CS101</span>
+</div>
+<ul class="text-sm text-gray-500 space-y-2 mb-3">
+<li>• Laptop with minimum 8GB RAM</li>
+<li>• Python IDE (Available at Computer Lab)</li>
+<li>• Course Textbook (Available at Campus Store)</li>
+</ul>
+<button class="text-primary text-sm">View Store Location</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Data Structures</h4>
+<span class="text-sm bg-green-100 text-green-600 px-2 py-1 rounded">CS201</span>
+</div>
+<ul class="text-sm text-gray-500 space-y-2 mb-3">
+<li>• Java Development Kit</li>
+<li>• Eclipse IDE (Pre-installed in Labs)</li>
+<li>• Course Materials Pack</li>
+</ul>
+<button class="text-primary text-sm">View Store Location</button>
+</div>
+</div>
+</div>
+
+<div class="mb-6">
+<h3 class="font-medium mb-4">Software Resources</h3>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<h4 class="font-medium mb-2">Student Software Portal</h4>
+<p class="text-sm text-gray-500">Access free software licenses</p>
+<button class="text-primary text-sm mt-2">Access Portal</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border">
+<h4 class="font-medium mb-2">Virtual Labs</h4>
+<p class="text-sm text-gray-500">Remote access to development environments</p>
+<button class="text-primary text-sm mt-2">Connect Now</button>
+</div>
+</div>
+</div>
+
+<div>
+<h3 class="font-medium mb-4">Support Services</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-store-2-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">Campus Store</h4>
+<p class="text-xs text-gray-500 mb-2">Main Building, Ground Floor</p>
+<button class="text-primary text-sm">Get Directions</button>
+</div>
+
+<div class="bg-white rounded-lg p-4 border text-center">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-computer-line text-primary"></i>
+</div>
+<h4 class="font-medium mb-1">IT Support</h4>
+<p class="text-xs text-gray-500 mb-2">Tech Building, Room 105</p>
+<button class="text-primary text-sm">Get Help</button>
+</div>
+</div>
+</div>
+</div>
+`;
+
+const pages = {
+home: `
+<div class="p-4">
+<div id="qrCodeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white p-6 rounded-lg w-[300px] relative">
+<button onclick="closeQRCode()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line text-xl"></i>
+</button>
+<h3 class="text-lg font-medium mb-4 text-center">Your Check-in QR Code</h3>
+<div class="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2025001234" alt="QR Code" class="w-48 h-48">
+</div>
+<p class="text-sm text-gray-500 text-center">Student ID: 2025001234</p>
+</div>
+</div>
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-medium">Welcome back</h2>
+<p class="text-sm text-gray-500">Student ID: 2025001234</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-primary bg-opacity-10 p-4 rounded-lg cursor-pointer" onclick="showQRCode()">
+<div class="w-8 h-8 flex items-center justify-center mb-2">
+<i class="ri-qr-scan-line text-primary text-xl"></i>
+</div>
+<h3 class="font-medium mb-1">Check In</h3>
+<p class="text-xs text-gray-500">Scan QR code to check in</p>
+</div>
+<div id="qrCodeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white p-6 rounded-lg w-[300px] relative">
+<button onclick="closeQRCode()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line text-xl"></i>
+</button>
+<h3 class="text-lg font-medium mb-4 text-center">Your Check-in QR Code</h3>
+<div class="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2025001234" alt="QR Code" class="w-48 h-48">
+</div>
+<p class="text-sm text-gray-500 text-center">Student ID: 2025001234</p>
+</div>
+</div>
+<div class="bg-primary bg-opacity-10 p-4 rounded-lg">
+<div class="w-8 h-8 flex items-center justify-center mb-2">
+<i class="ri-calendar-line text-primary text-xl"></i>
+</div>
+<h3 class="font-medium mb-1">Schedule</h3>
+<p class="text-xs text-gray-500">View your timetable</p>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="font-medium mb-4">Today's Classes</h3>
+<div class="space-y-3">
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Computer Science</h4>
+<span class="text-sm text-primary">09:00 - 10:30</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Room MX-101</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-user-line mr-2"></i>
+<span>Dr. Sarah Johnson</span>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Data Structures</h4>
+<span class="text-sm text-primary">11:00 - 12:30</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">Room MH-205</p>
+<div class="flex items-center text-sm text-gray-500">
+<i class="ri-user-line mr-2"></i>
+<span>Prof. Michael Brown</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="font-medium mb-4">Campus Map</h3>
+<div class="map-container h-48 rounded-lg overflow-hidden relative">
+<img src="https://public.readdy.ai/gen_page/map_placeholder_1280x720.png" class="w-full h-full object-cover" alt="Campus Map">
+<div class="absolute bottom-4 right-4">
+<button class="bg-white px-4 py-2 rounded-button shadow-lg flex items-center">
+<i class="ri-map-2-line mr-2"></i>
+<span>View Full Map</span>
+</button>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-medium mb-4">Quick Links</h3>
+<div class="grid grid-cols-4 gap-4">
+<div class="text-center cursor-pointer" onclick="pages.library = libraryPage; switchPage('library')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-book-line text-primary"></i>
+</div>
+<span class="text-xs">Library</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.chat = chatPage; switchPage('chat')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-message-2-line text-primary"></i>
+</div>
+<span class="text-xs">Chat</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.events = eventsPage; switchPage('events')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-calendar-event-line text-primary"></i>
+</div>
+<span class="text-xs">Events</span>
+</div>
+<div class="text-center cursor-pointer" onclick="pages.resources = resourcesPage; switchPage('resources')">
+<div class="w-12 h-12 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-2">
+<i class="ri-file-list-3-line text-primary"></i>
+</div>
+<span class="text-xs">Resources</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Mail</h3>
+<button class="text-primary text-sm" onclick="showAllMail()">View All</button>
+</div>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border cursor-pointer" onclick="showMailDetail(0)">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center">
+<div class="w-2 h-2 bg-primary rounded-full mr-2"></div>
+<h4 class="font-medium">Welcome to Computer Science Department</h4>
+</div>
+<span class="text-xs text-gray-500">1h ago</span>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2">Dear new students, Welcome to the Computer Science Department! We're excited to have you join our academic community...</p>
+</div>
+<div class="bg-white rounded-lg p-4 border cursor-pointer" onclick="showMailDetail(1)">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center">
+<div class="w-2 h-2 bg-primary rounded-full mr-2"></div>
+<h4 class="font-medium">Research Assistant Opportunity</h4>
+</div>
+<span class="text-xs text-gray-500">3h ago</span>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2">Looking for passionate students to join our AI research team. Great opportunity to gain hands-on experience...</p>
+</div>
+<div class="bg-white rounded-lg p-4 border cursor-pointer" onclick="showMailDetail(2)">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium">Assignment Deadline Extension</h4>
+<span class="text-xs text-gray-500">5h ago</span>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2">Due to the upcoming university event, the deadline for the Data Structures assignment has been extended...</p>
+</div>
+</div>
+</div>
+<div id="mailDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white p-6 rounded-lg w-[340px] max-h-[80vh] overflow-y-auto relative">
+<button onclick="closeMailDetail()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line text-xl"></i>
+</button>
+<div id="mailDetailContent"></div>
+</div>
+</div>
+</div>
+`,
+schedule: `
+<div class="p-4">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-medium">Weekly Schedule</h2>
+<div class="flex items-center space-x-2">
+<button class="p-2 rounded-full bg-gray-100" onclick="changeWeek(-1)">
+<i class="ri-arrow-left-s-line"></i>
+</button>
+<span class="text-sm" id="weekDisplay">March 4-10, 2025</span>
+<button class="p-2 rounded-full bg-gray-100" onclick="changeWeek(1)">
+<i class="ri-arrow-right-s-line"></i>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto pb-4 -mx-4 px-4" style="scroll-snap-type: x mandatory;">
+<div class="grid grid-cols-6 gap-4 mb-6 min-w-[800px]" style="scroll-snap-align: start;">
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Monday</div>
+<div class="space-y-2">
+<div class="bg-blue-100 rounded-lg p-3 border border-blue-200">
+<div class="text-sm font-medium text-blue-800">Computer Science</div>
+<div class="text-xs text-blue-600">09:00 - 10:30</div>
+<div class="text-xs text-blue-600">Room MX-101</div>
+<div class="text-xs text-blue-600">Dr. Sarah Johnson</div>
+</div>
+<div class="bg-purple-100 rounded-lg p-3 border border-purple-200">
+<div class="text-sm font-medium text-purple-800">Mathematics</div>
+<div class="text-xs text-purple-600">14:00 - 15:30</div>
+<div class="text-xs text-purple-600">Room MT-302</div>
+<div class="text-xs text-purple-600">Dr. James Wilson</div>
+</div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Tuesday</div>
+<div class="space-y-2">
+<div class="bg-green-100 rounded-lg p-3 border border-green-200">
+<div class="text-sm font-medium text-green-800">Data Structures</div>
+<div class="text-xs text-green-600">11:00 - 12:30</div>
+<div class="text-xs text-green-600">Room MH-205</div>
+<div class="text-xs text-green-600">Prof. Michael Brown</div>
+</div>
+<div class="bg-pink-100 rounded-lg p-3 border border-pink-200">
+<div class="text-sm font-medium text-pink-800">Software Engineering</div>
+<div class="text-xs text-pink-600">15:30 - 17:00</div>
+<div class="text-xs text-pink-600">Room SE-401</div>
+<div class="text-xs text-pink-600">Dr. Lisa Chen</div>
+</div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Wednesday</div>
+<div class="space-y-2">
+<div class="bg-orange-100 rounded-lg p-3 border border-orange-200">
+<div class="text-sm font-medium text-orange-800">Database Systems</div>
+<div class="text-xs text-orange-600">09:30 - 11:00</div>
+<div class="text-xs text-orange-600">Room DB-201</div>
+<div class="text-xs text-orange-600">Prof. David Lee</div>
+</div>
+<div class="bg-blue-100 rounded-lg p-3 border border-blue-200">
+<div class="text-sm font-medium text-blue-800">Computer Science</div>
+<div class="text-xs text-blue-600">13:00 - 14:30</div>
+<div class="text-xs text-blue-600">Room MX-101</div>
+<div class="text-xs text-blue-600">Dr. Sarah Johnson</div>
+</div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Thursday</div>
+<div class="space-y-2">
+<div class="bg-green-100 rounded-lg p-3 border border-green-200">
+<div class="text-sm font-medium text-green-800">Data Structures</div>
+<div class="text-xs text-green-600">11:00 - 12:30</div>
+<div class="text-xs text-green-600">Room MH-205</div>
+<div class="text-xs text-green-600">Prof. Michael Brown</div>
+</div>
+<div class="bg-purple-100 rounded-lg p-3 border border-purple-200">
+<div class="text-sm font-medium text-purple-800">Mathematics</div>
+<div class="text-xs text-purple-600">14:00 - 15:30</div>
+<div class="text-xs text-purple-600">Room MT-302</div>
+<div class="text-xs text-purple-600">Dr. James Wilson</div>
+</div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Friday</div>
+<div class="space-y-2">
+<div class="bg-pink-100 rounded-lg p-3 border border-pink-200">
+<div class="text-sm font-medium text-pink-800">Software Engineering</div>
+<div class="text-xs text-pink-600">09:30 - 11:00</div>
+<div class="text-xs text-pink-600">Room SE-401</div>
+<div class="text-xs text-pink-600">Dr. Lisa Chen</div>
+</div>
+<div class="bg-orange-100 rounded-lg p-3 border border-orange-200">
+<div class="text-sm font-medium text-orange-800">Database Systems</div>
+<div class="text-xs text-orange-600">13:30 - 15:00</div>
+<div class="text-xs text-orange-600">Room DB-201</div>
+<div class="text-xs text-orange-600">Prof. David Lee</div>
+</div>
+</div>
+</div>
+<div class="text-center">
+<div class="text-sm font-medium mb-2">Saturday</div>
+<div class="h-full flex items-center justify-center">
+<span class="text-sm text-gray-500">No Classes</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<h3 class="text-lg font-medium mb-4">Subject Color Guide</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center space-x-2">
+<div class="w-4 h-4 rounded bg-blue-100 border border-blue-200"></div>
+<span class="text-sm">Computer Science</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
+<span class="text-sm">Data Structures</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-4 h-4 rounded bg-purple-100 border border-purple-200"></div>
+<span class="text-sm">Mathematics</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-4 h-4 rounded bg-pink-100 border border-pink-200"></div>
+<span class="text-sm">Software Engineering</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-4 h-4 rounded bg-orange-100 border border-orange-200"></div>
+<span class="text-sm">Database Systems</span>
+</div>
+</div>
+</div>
+</div>
+`,
+map: `
+<div class="p-4">
+<h2 class="text-xl font-medium mb-6">Campus Map</h2>
+<div class="map-container h-[calc(100vh-200px)] rounded-lg overflow-hidden relative mb-6">
+<img src="https://public.readdy.ai/gen_page/map_placeholder_1280x720.png" class="w-full h-full object-cover" alt="Campus Map">
+</div>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-2">Main Building</h3>
+<p class="text-sm text-gray-500">Located at the heart of campus, housing administrative offices and lecture halls.</p>
+</div>
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-2">Library</h3>
+<p class="text-sm text-gray-500">Open 24/7 with study spaces and extensive research resources.</p>
+</div>
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-2">Student Center</h3>
+<p class="text-sm text-gray-500">Your go-to place for student services, dining, and recreational activities.</p>
+</div>
+</div>
+</div>
+`,
+courses: `
+<div class="p-4">
+<h2 class="text-xl font-medium mb-6">My Courses</h2>
+<div class="space-y-4">
+<div class="bg-blue-100 rounded-lg p-4 border border-blue-200">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-blue-800">Computer Science</h4>
+<span class="text-sm bg-blue-50 text-blue-600 px-2 py-1 rounded">In Progress</span>
+</div>
+<p class="text-sm text-blue-600 mb-2">CS101 - Introduction to Programming</p>
+<div class="flex items-center text-sm text-blue-600">
+<i class="ri-user-line mr-2"></i>
+<span>Dr. Sarah Johnson</span>
+</div>
+</div>
+<div class="bg-green-100 rounded-lg p-4 border border-green-200">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-green-800">Data Structures</h4>
+<span class="text-sm bg-green-50 text-green-600 px-2 py-1 rounded">In Progress</span>
+</div>
+<p class="text-sm text-green-600 mb-2">CS201 - Advanced Programming Concepts</p>
+<div class="flex items-center text-sm text-green-600">
+<i class="ri-user-line mr-2"></i>
+<span>Prof. Michael Brown</span>
+</div>
+</div>
+<div class="bg-orange-100 rounded-lg p-4 border border-orange-200">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-orange-800">Database Systems</h4>
+<span class="text-sm bg-orange-50 text-orange-600 px-2 py-1 rounded">In Progress</span>
+</div>
+<p class="text-sm text-orange-600 mb-2">CS301 - SQL and NoSQL Systems</p>
+<div class="flex items-center text-sm text-orange-600">
+<i class="ri-user-line mr-2"></i>
+<span>Prof. David Lee</span>
+</div>
+</div>
+<div class="bg-purple-100 rounded-lg p-4 border border-purple-200">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-purple-800">Mathematics</h4>
+<span class="text-sm bg-purple-50 text-purple-600 px-2 py-1 rounded">In Progress</span>
+</div>
+<p class="text-sm text-purple-600 mb-2">MATH201 - Advanced Calculus</p>
+<div class="flex items-center text-sm text-purple-600">
+<i class="ri-user-line mr-2"></i>
+<span>Dr. James Wilson</span>
+</div>
+</div>
+<div class="bg-pink-100 rounded-lg p-4 border border-pink-200">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-pink-800">Software Engineering</h4>
+<span class="text-sm bg-pink-50 text-pink-600 px-2 py-1 rounded">In Progress</span>
+</div>
+<p class="text-sm text-pink-600 mb-2">SE301 - Software Development Lifecycle</p>
+<div class="flex items-center text-sm text-pink-600">
+<i class="ri-user-line mr-2"></i>
+<span>Dr. Lisa Chen</span>
+</div>
+</div>
+</div>
+</div>
+`,
+profile: `
+<div class="p-4">
+<div class="flex items-center space-x-4 mb-6">
+<div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-3xl"></i>
+</div>
+<div>
+<h2 class="text-xl font-medium">John Anderson</h2>
+<p class="text-sm text-gray-500">Student ID: 2025001234</p>
+<p class="text-sm text-gray-500">Computer Science, Year 2</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-2">Personal Information</h3>
+<div class="space-y-2">
+<div class="flex justify-between">
+<span class="text-sm text-gray-500">Email</span>
+<span class="text-sm">john.anderson@wlv.ac.uk</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-500">Phone</span>
+<span class="text-sm">+44 7700 900123</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-500">Date of Birth</span>
+<span class="text-sm">15 May 2003</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border">
+<h3 class="font-medium mb-2">Academic Progress</h3>
+<div class="space-y-2">
+<div class="flex justify-between">
+<span class="text-sm text-gray-500">Average Assignment Score</span>
+<span class="text-sm">85%</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-500">Credits Completed</span>
+<span class="text-sm">60/120</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-3 rounded-button">
+Edit Profile
+</button>
+<button class="w-full border border-gray-300 text-gray-700 py-3 rounded-button">
+Settings
+</button>
+</div>
+</div>
+`
+};
+const mainContent = document.querySelector('main');
+let currentWeek = 0;
+const weekData = [
+{ start: "March 4", end: "March 10", year: "2025" },
+{ start: "March 11", end: "March 17", year: "2025" },
+{ start: "March 18", end: "March 24", year: "2025" },
+{ start: "March 25", end: "March 31", year: "2025" },
+{ start: "April 1", end: "April 7", year: "2025" }
+];
+function changeWeek(direction) {
+currentWeek += direction;
+if (currentWeek < 0) currentWeek = weekData.length - 1;
+if (currentWeek >= weekData.length) currentWeek = 0;
+const week = weekData[currentWeek];
+document.getElementById('weekDisplay').textContent = `${week.start}-${week.end}, ${week.year}`;
+// Smooth scroll to start when changing weeks
+const container = document.querySelector('.overflow-x-auto');
+container.scrollTo({ left: 0, behavior: 'smooth' });
+}
+function switchPage(pageName) {
+mainContent.innerHTML = pages[pageName];
+document.querySelectorAll('nav a').forEach(el => {
+el.classList.remove('tab-active');
+el.classList.add('text-gray-500');
+});
+document.querySelector(`nav a[data-page="${pageName}"]`).classList.add('tab-active');
+document.querySelector(`nav a[data-page="${pageName}"]`).classList.remove('text-gray-500');
+if(pageName === 'schedule') {
+// Reset to first week when entering schedule page
+currentWeek = 0;
+const week = weekData[currentWeek];
+document.getElementById('weekDisplay').textContent = `${week.start}-${week.end}, ${week.year}`;
+}
+}
+document.querySelectorAll('nav a').forEach(link => {
+const pageName = link.querySelector('span').textContent.toLowerCase();
+link.setAttribute('data-page', pageName);
+link.addEventListener('click', () => switchPage(pageName));
+});
+switchPage('home');
+document.addEventListener('DOMContentLoaded', function() {
+const mailDetailModal = document.createElement('div');
+mailDetailModal.id = 'mailDetailModal';
+mailDetailModal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50';
+mailDetailModal.innerHTML = `
+<div class="bg-white p-6 rounded-lg w-[340px] max-h-[80vh] overflow-y-auto relative">
+<button onclick="closeMailDetail()" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line text-xl"></i>
+</button>
+<div id="mailDetailContent"></div>
+</div>
+`;
+document.body.appendChild(mailDetailModal);
+});
+function showQRCode() {
+const modal = document.getElementById('qrCodeModal');
+modal.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+}
+function closeQRCode() {
+const modal = document.getElementById('qrCodeModal');
+modal.style.display = 'none';
+document.body.style.overflow = 'auto';
+}
+</script>
+</body>
+</html>
