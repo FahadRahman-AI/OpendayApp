@@ -22,7 +22,7 @@ void _error(String message){
   showDialog(context: context, builder: (BuildContext context){
     return AlertDialog(
       title: Text("Error!"),
-      content: Text(message), //Take String from function
+      content: Text(message), 
       actions: <Widget>[
         TextButton(
           child: Text('Close'),
@@ -36,27 +36,66 @@ void _error(String message){
   );
   }
 
-//Method to get the username and passwords
-void _login(){
-  String user = _userController.text.trim();//Removes any extra spaces
-  String pass = _passController.text.trim();
-  //Error Handling
-  if (user.isNotEmpty && pass.isNotEmpty) {
-    // Small welcome SnackBar pop up to welcome User
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Welcome, $user'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AboutUs()),
-    );
-  }else{ //Error Handling
-    _error('Please enter both a username and password');
+// Async login method to run log in code without disturbing the app
+  Future<void> _login() async {
+    String user = _userController.text.trim();
+    String pass = _passController.text.trim();
+
+    // Debug: Print the username and password to see what is entered
+    print('Username: $user');
+    print('Password: $pass');
+
+    if (user.isNotEmpty && pass.isNotEmpty) {
+      final url = Uri.parse('http://192.168.0.161/Open_Day_App/login.php'); // Update with your actual server URL
+
+      try {
+        // Send a POST request with the correct body format
+        final response = await http.post(url, body: {
+          'username': user,
+          'password': pass,
+        });
+
+        //Debug check what was received from the API
+        print('Response body: ${response.body}');
+
+        if (response.statusCode == 200) {
+          try {
+            var jsonResponse = json.decode(response.body);
+
+            if (jsonResponse['success'] == true) {
+              // Login successful
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Login successful! Welcome, $user!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutUs()), // Navigate to About Us page
+              );
+            } else {
+              // Invalid credentials or another error
+              _error(jsonResponse['message']);
+            }
+          } catch (e) {
+            // If the response cannot be parsed into JSON
+            print('Error parsing response: $e');
+            _error('Error parsing server response');
+          }
+        } else {
+          // If the server returns a non-200 status code
+          _error('Server error: ${response.statusCode}');
+        }
+      } catch (e) {
+        // Handle connection issues
+        print('Error sending request: $e');
+        _error('Failed to connect to the server');
+      }
+    } else {
+      _error('Please enter both username and password');
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
