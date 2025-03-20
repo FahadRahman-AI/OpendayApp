@@ -23,85 +23,108 @@ class _RegistrationState extends State<Registration> {
 
   // Date picker method
   Future<void> _selectDate(BuildContext context) async {
-    DateTime initialDate = DateTime.now();
-    DateTime firstDate = DateTime(1900);
-    DateTime lastDate = DateTime.now();
-
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
+      initialDate: DateTime(2000), // Default to year 2000
+      firstDate: DateTime(1900),   // Allow old dates
+      lastDate: DateTime.now(),    // Prevent future dates
     );
-    if (picked != null && picked != initialDate) {
+
+    if (picked != null) {
       setState(() {
-        _selectedDateOfBirth = "${picked.day}/${picked.month}/${picked.year}";
+        _selectedDateOfBirth = "${picked.year}-${picked.month}-${picked.day}";
       });
     }
   }
 
-  // Registration logic
-  void _handleRegistration() {
-    final fullName = _fullNameController.text;
-    final email = _emailController.text;
-    final contact = _contactController.text;
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
+  // Function to register user
+  void _handleRegistration() async {
+    // Extract input values
+    final fullName = _fullNameController.text.trim();
+    final email = _emailController.text.trim();
+    final contact = _contactController.text.trim();
+    final username = _usernameController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-    // Simple validation for matching passwords
-    if (password != confirmPassword || password.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Passwords do not match!'),
-      ));
+    // Validation
+    if (fullName.isEmpty) {
+      _showSnackbar('Full Name cannot be empty!');
       return;
-      //Check username is not empty
-    } else if (username == null || username
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Username cannot be empty!'),
-      ));
-      return;
-      //Check Full name is not empty
-    }else if (fullName == null || fullName
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Full Name cannot be empty!'),
-      ));
-      return;
-      //Check Email is not empty
-    }else if (email == null || email
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Email cannot be empty!'),
-      ));
-      return;
-      //Check if Contact Number is empty and exclude letters
-    }else if (contact == null || contact.trim().isEmpty || !RegExp(r'^[0-9]+$').hasMatch(contact)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Contact Number invalid! Must contain only numbers.'),
-      ));
-      return;
-      //Check a date of birth has been selected
-    }else if (_selectedDateOfBirth == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please select your date of birth!'),
-      ));
-      return;
-      //If all data is filled in, return to login page
-    }else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => IntroScreen()));
     }
-    // Print to show registration has worked, replace with database logic
-    print('Full Name: $fullName');
-    print('Email: $email');
-    print('Contact Number: $contact');
-    print('Date of Birth: $_selectedDateOfBirth');
-    print('Username: $username');
-    print('Password: $password');
+    if (email.isEmpty || !email.contains('@')) {
+      _showSnackbar('Invalid Email!');
+      return;
+    }
+    if (contact.isEmpty || !RegExp(r'^[0-9]+$').hasMatch(contact)) {
+      _showSnackbar('Contact Number must contain only numbers!');
+      return;
+    }
+    if (_selectedDateOfBirth == null) {
+      _showSnackbar('Please select your date of birth!');
+      return;
+    }
+    if (username.isEmpty) {
+      _showSnackbar('Username cannot be empty!');
+      return;
+    }
+    if (password.isEmpty || password.length < 6) {
+      _showSnackbar('Password must be at least 6 characters long!');
+      return;
+    }
+    if (password != confirmPassword) {
+      _showSnackbar('Passwords do not match!');
+      return;
+    }
+
+    // API URL local ip address for emulator to use
+    final url = Uri.parse('http://192.168.0.161/Open_Day_App/register.php');
+
+    try {
+      // Send POST request to PHP API
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'full_name': fullName,
+          'email': email,
+          'contact_number': contact,
+          'dob': _selectedDateOfBirth,
+          'username': username,
+          'password': password,
+        }),
+      );
+      //DEBUG (given by chatGPT)
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        // Handle success
+      } else {
+        // Handle error
+      }
+
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 200 && responseData['success'] == true) {
+        _showSnackbar('Registration successful!');
+
+        // Navigate to the Intro Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => IntroScreen()),
+        );
+      } else {
+        _showSnackbar(responseData['message'] ?? 'Registration failed!');
+      }
+    } catch (error) {
+      _showSnackbar('Error: Could not connect to the server!');
+    }
+  }
+
+  // Helper function to show Snackbar messages
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
