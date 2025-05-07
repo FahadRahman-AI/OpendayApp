@@ -1,8 +1,9 @@
-import 'package:app1/intro_screen.dart';
 import 'package:flutter/material.dart';
-import 'pages_layout.dart';
-
-//Create the registration page with name, dob and gender
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'intro_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Registration extends StatefulWidget {
   @override
@@ -10,140 +11,121 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  // Controllers for text fields
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-  // Date of birth field
   String? _selectedDateOfBirth;
 
-  // Date picker method
   Future<void> _selectDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
-    DateTime firstDate = DateTime(1900);
-    DateTime lastDate = DateTime.now();
-
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
     );
-    if (picked != null && picked != initialDate) {
+    if (picked != null) {
       setState(() {
         _selectedDateOfBirth = "${picked.day}/${picked.month}/${picked.year}";
       });
     }
   }
 
+  Future<void> _handleRegistration() async {
+    final fullName = _fullNameController.text.trim();
+    final email = _emailController.text.trim();
+    final contact = _contactController.text.trim();
+    final username = _usernameController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-  // Registration logic
-  void _handleRegistration() {
-    final fullName = _fullNameController.text;
-    final email = _emailController.text;
-    final contact = _contactController.text;
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-
-    // Simple validation for matching passwords
-    if (password != confirmPassword || password.trim().isEmpty) {
+    if (password != confirmPassword || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Passwords do not match!'),
       ));
       return;
-      //Check username is not empty
-    } else if (username == null || username
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Username cannot be empty!'),
-      ));
-      return;
-      //Check Full name is not empty
-    }else if (fullName == null || fullName
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Full Name cannot be empty!'),
-      ));
-      return;
-      //Check Email is not empty
-    }else if (email == null || email
-        .trim()
-        .isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Email cannot be empty!'),
-      ));
-      return;
-      //Check if Contact Number is empty and exclude letters
-    }else if (contact == null || contact.trim().isEmpty || !RegExp(r'^[0-9]+$').hasMatch(contact)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Contact Number invalid! Must contain only numbers.'),
-      ));
-      return;
-      //Check a date of birth has been selected
-    }else if (_selectedDateOfBirth == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please select your date of birth!'),
-      ));
-      return;
-      //If all data is filled in, return to login page
-    }else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => IntroScreen()));
     }
-    // Print to show registration has worked, replace with database logic
-    print('Full Name: $fullName');
-    print('Email: $email');
-    print('Contact Number: $contact');
-    print('Date of Birth: $_selectedDateOfBirth');
-    print('Username: $username');
-    print('Password: $password');
+
+    if (username.isEmpty || fullName.isEmpty || email.isEmpty || contact.isEmpty || _selectedDateOfBirth == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('All fields are required'),
+      ));
+      return;
+    }
+
+    var url = Uri.parse("http://192.168.0.161/Open_Day_App/register.php");
+
+    try {
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'full_name': fullName,
+          'email': email,
+          'contact_number': contact,
+          'dob': _selectedDateOfBirth,
+          'username': username,
+          'password': password,
+        }),
+      );
+
+      print("Server response: ${response.body}");
+
+      var responseJson = json.decode(response.body);
+      print('Raw success value: ${responseJson['success']}');
+
+      if (responseJson['success'] == true || responseJson['success'].toString().toLowerCase() == 'true') {
+        print('Saving user data...');
+        final prefs = await SharedPreferences.getInstance();
+
+        print('Email: $email');
+        print('DOB: $_selectedDateOfBirth');
+        print('Contact: $contact');
+        print('Password: $password');
+
+        await prefs.setString('email', email);
+        await secureStorage.write(key: 'password', value: password);
+        await prefs.setString('dob', _selectedDateOfBirth!);
+        await prefs.setString('contact', contact);
+
+        print('Data saved successfully. Navigating to IntroScreen...');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => IntroScreen()),
+        );
+      } else {
+        print('Registration failed with message: ${responseJson['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(responseJson['message'] ?? 'Registration failed')),
+        );
+      }
+    } catch (e) {
+      print('Error during registration: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred. Please try again.')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
-      title: 'Register',
+    return Scaffold(
+      appBar: AppBar(title: Text('Register')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Full Name
-            TextField(
-              controller: _fullNameController,
-              decoration: InputDecoration(
-                labelText: 'Full Name',
-              ),
-            ),
+            TextField(controller: _fullNameController, decoration: InputDecoration(labelText: 'Full Name')),
             SizedBox(height: 10),
-
-            // Email
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'example@domain.com',
-              ),
-            ),
+            TextField(controller: _emailController, decoration: InputDecoration(labelText: 'Email')),
             SizedBox(height: 10),
-
-            // Contact Number
-            TextField(
-              controller: _contactController,
-              decoration: InputDecoration(
-                labelText: 'Contact Number',
-                hintText: 'e.g. +1234567890',
-              ),
-              keyboardType: TextInputType.phone,
-            ),
+            TextField(controller: _contactController, decoration: InputDecoration(labelText: 'Contact Number'), keyboardType: TextInputType.phone),
             SizedBox(height: 10),
-
-            // Date of Birth
             Row(
               children: [
                 Text('Date of Birth: ', style: TextStyle(fontSize: 16)),
@@ -154,45 +136,16 @@ class _RegistrationState extends State<Registration> {
               ],
             ),
             SizedBox(height: 10),
-
-            // Username
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-              ),
-            ),
+            TextField(controller: _usernameController, decoration: InputDecoration(labelText: 'Username')),
             SizedBox(height: 10),
-
-            // Password
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-              ),
-              obscureText: true, // Mask the password text
-            ),
+            TextField(controller: _passwordController, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
             SizedBox(height: 10),
-
-            // Confirm Password
-            TextField(
-              controller: _confirmPasswordController,
-              decoration: InputDecoration(
-                labelText: 'Confirm Password',
-              ),
-              obscureText: true, // Mask the confirm password text
-            ),
+            TextField(controller: _confirmPasswordController, decoration: InputDecoration(labelText: 'Confirm Password'), obscureText: true),
             SizedBox(height: 20),
-
-            // Register Button
-            ElevatedButton(
-              onPressed: _handleRegistration,
-              child: Text('Register'),
-            ),
+            ElevatedButton(onPressed: _handleRegistration, child: Text('Register')),
           ],
         ),
       ),
-      showMenu: false,
     );
   }
 }
