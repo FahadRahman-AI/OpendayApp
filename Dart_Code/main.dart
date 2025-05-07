@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'intro_screen.dart';
 import 'pages_layout.dart';
 
+
 //This runs the app
 void main() {
   runApp(MaterialApp(
@@ -65,8 +66,7 @@ void main() {
     showMenu: false,
   );
   }
-  }
-
+}
 
 
 
