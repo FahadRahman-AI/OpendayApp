@@ -1,69 +1,105 @@
 import 'package:flutter/material.dart';
-import 'about_us.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'about_us.dart'; 
 import 'registration.dart';
 
-///This page is a Stateful Widget as it will be edited by user text and we want
-///to capture that text and at some point insert it into our database.
-///So far information requested on the register page is Name, DOB, Gender
-///
 class IntroScreen extends StatefulWidget {
   @override
   _IntroScreenState createState() => _IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen>{
+class _IntroScreenState extends State<IntroScreen> {
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
 
-//Read and return text input for username and password fields
-final TextEditingController _userController = TextEditingController();
-final TextEditingController _passController = TextEditingController();
-
-//Method for error handling, individual messages for different errors
-void _error(String message){
-  showDialog(context: context, builder: (BuildContext context){
-    return AlertDialog(
-      title: Text("Error!"),
-      content: Text(message), //Take String from function
-      actions: <Widget>[
-        TextButton(
-          child: Text('Close'),
-          onPressed: (){
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
+  // Method to handle login error
+  void _error(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error!"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
-  },
-  );
   }
 
-//Method to get the username and passwords
-void _login(){
-  String user = _userController.text.trim();//Removes any extra spaces
-  String pass = _passController.text.trim();
-  //Error Handling
-  if (user.isNotEmpty && pass.isNotEmpty) {
-    // Small welcome SnackBar pop up to welcome User
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Welcome, $user'),
-        duration: Duration(seconds: 2),
-      ),
+  // Method to handle login functionality
+  Future<void> _login() async {
+    String user = _userController.text.trim();
+    String pass = _passController.text.trim();
+
+    // Error handling
+    if (user.isEmpty || pass.isEmpty) {
+      _error('Please enter both a username and password');
+      return;
+    }
+
+    // Send login data to PHP backend
+    print("Username: $user, Password: $pass");
+    var url = Uri.parse("http://192.168.0.161/Open_Day_App/login.php");
+    try{
+    var response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'username': user,
+        'password': pass,
+      }),
     );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AboutUs()),
-    );
-  }else{ //Error Handling
-    _error('Please enter both a username and password');
+
+
+    // Check if response status code is 200 (OK)
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print("Response: $responseData"); // Debugging response from server
+
+      // Check if the response contains a 'success' key with value true
+      if (responseData['success']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Welcome, $user'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // Navigate to the next page after successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AboutUs()),
+        );
+      } else {
+        // If login is not successful, show an error message
+        _error(responseData['message']);
+      }
+    } else {
+      // If the status code is not 200, show an error message
+      _error('Failed to connect to server. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+  // If there is an exception (e.g., no internet connection), handle it
+  _error('Error: $e');
   }
 }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text('Login / Register'), backgroundColor: Colors.blueGrey),
+        automaticallyImplyLeading: false,
+        title: Text('Login / Register'),
+        backgroundColor: Colors.blueGrey,
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -81,21 +117,15 @@ void _login(){
               obscureText: true, // Hide password input
             ),
             SizedBox(height: 20),
-            ///Again, somewhat stuck with what to do here, obviously we want
-            ///login to take us to the next page but until the logic above is
-            ///done I don't just want the button to navigate to main page
-            ///if you want to set it to navigate to next page just to check
-            ///the rest of the app though feel free
             ElevatedButton(
               onPressed: _login,
               child: Text('Log In'),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
             ),
             SizedBox(height: 10),
-            //Register button with navigate to Registration Page
+            // Register button to navigate to Registration Page
             OutlinedButton(
-              onPressed: (){
-                //Go to register page
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Registration()),
@@ -106,7 +136,6 @@ void _login(){
           ],
         ),
       ),
-
     );
   }
 }
