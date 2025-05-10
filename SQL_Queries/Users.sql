@@ -14,3 +14,9 @@ CREATE TABLE Users (
     User_Role ENUM('Student', 'Staff', 'Visitor') NOT NULL,
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE Users
+ADD COLUMN fullNameEncrypted VARBINARY(255),
+ADD COLUMN emailEncrypted VARBINARY(255),
+ADD COLUMN contactNumEncrypted VARBINARY(255),
+ADD COLUMN addressEncrypted VARBINARY(255),
+ADD COLUMN postcodeEncrypted VARBINARY(255);
