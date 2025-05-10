@@ -10,6 +10,11 @@ $username = "root";
 $password = "Wolverine1..";  
 $dbname = "appdata";  
 
+// Encryption settings
+$encryption_key = base64_encode(random_bytes(32));  // encryption key
+$iv_length = openssl_cipher_iv_length('AES-256-CBC');
+$iv = openssl_random_pseudo_bytes($iv_length);
+
 // Create the connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -34,6 +39,20 @@ $contact_number = $conn->real_escape_string($data['contact_number']);
 $dob = $conn->real_escape_string($data['dob']);
 $username = $conn->real_escape_string($data['username']);
 $password = password_hash($data['password'], PASSWORD_BCRYPT); 
+
+/*
+// Encrypt sensitive data
+$full_name = openssl_encrypt($data['full_name'], 'AES-256-CBC', $encryption_key, 0, $iv);
+$email = openssl_encrypt($data['email'], 'AES-256-CBC', $encryption_key, 0, $iv);
+$contact_number = openssl_encrypt($data['contact_number'], 'AES-256-CBC', $encryption_key, 0, $iv);
+$dob = openssl_encrypt($data['dob'], 'AES-256-CBC', $encryption_key, 0, $iv);
+$username = $conn->real_escape_string($data['username']);  // Keep username as plaintext
+$password = password_hash($data['password'], PASSWORD_BCRYPT);
+
+
+// Store the IV alongside the encrypted data (required for decryption)
+$iv_base64 = base64_encode($iv);
+*/
 
 // Prepare the SQL query to insert the user data
 $sql = "INSERT INTO appdata (Full_Name, Email, Contact_Number, DOB, Username, Password) VALUES (?, ?, ?, ?, ?, ?)";
