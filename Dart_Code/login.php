@@ -28,8 +28,10 @@ if (!isset($_POST['username']) || !isset($_POST['password'])) {
 }
 
 // Get the data from the POST request
-$user = $_POST['username'];
+$user = trim($_POST['username']); //trim helps sanitise the inputs
 $pass = $_POST['password'];
+
+
 
 // Log username and password separately 
 file_put_contents('php://stderr', "Username: $user\n", FILE_APPEND);
@@ -63,6 +65,16 @@ if ($result->num_rows > 0) {
     echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
 }
 
+/* // this is a lockout timer if the user enters the incorrect details 5 times the user will be locked from logging in for 1 minute
+$maxAttempts = 5;
+$lockTime = 1 * 60;
+
+// Check login attempts
+if ($user_data['failed_attempts'] >= $maxAttempts && (time() - strtotime($user_data['last_attempt'])) < $lockTime) {
+    echo json_encode(['success' => false, 'message' => 'Account locked. Try again later.']);
+    exit();
+}
+*/
 $stmt->close();
 $conn->close();
 ?>
